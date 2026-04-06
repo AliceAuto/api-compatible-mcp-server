@@ -1,0 +1,36 @@
+{
+  "name": "api-compatible-mcp-server",
+  "version": "0.1.0",
+  "private": true,
+  "description": "An MCP server that normalizes chat requests across Gemini, Grok, GPT, GLM, and other model APIs.",
+  "type": "module",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "dev": "tsx watch src/index.ts",
+    "cli": "tsx src/cli.ts",
+    "test": "tsx --test src/*.test.ts",
+    "start": "node dist/index.js"
+  },
+  "keywords": [
+    "mcp",
+    "llm",
+    "gemini",
+    "grok",
+    "gpt",
+    "glm"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.16.0",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.21",
+    "tsx": "^4.19.2",
+    "typescript": "^5.8.2"
+  }
+}
