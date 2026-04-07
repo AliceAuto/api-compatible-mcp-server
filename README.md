@@ -67,7 +67,7 @@ npm start
 ```json
 {
   "provider": "gemini",
-  "model": "gemini-2.0-flash",
+  "model": "gemini-2.5-flash",
   "messages": [
     { "role": "system", "content": "你是一个严谨的助手。" },
     { "role": "user", "content": "用一句话解释 MCP。" }

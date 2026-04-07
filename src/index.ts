@@ -1,7 +1,11 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+import { resolve } from "node:path";
 import { z } from "zod";
+import { loadEnvFromFileIfNeeded } from "./env.js";
 import { callProvider, getProviderSummary, prepareRequest, providerIds, type UnifiedMessage, type UnifiedChatRequest } from "./providers.js";
+
+loadEnvFromFileIfNeeded(resolve(".env"));
 
 const messageSchema = z.object({
   role: z.enum(["system", "user", "assistant"]),

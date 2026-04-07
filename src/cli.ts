@@ -67,11 +67,8 @@ const printUsage = () => {
 const main = async () => {
   const { options, positionals } = parseArgs(process.argv.slice(2));
   const command = (positionals[0] || "serve") as CliCommand;
-  const envFile = typeof options["env-file"] === "string" ? options["env-file"] : undefined;
-
-  if (envFile) {
-    loadEnvFromFileIfNeeded(resolve(envFile));
-  }
+  const envFile = typeof options["env-file"] === "string" ? options["env-file"] : ".env";
+  loadEnvFromFileIfNeeded(resolve(envFile));
 
   if (command === "serve") {
     await import("./index.js");

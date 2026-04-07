@@ -120,7 +120,7 @@ const buildProviderConfig = (id: ProviderId): ProviderConfig => {
         kind: "gemini",
         baseUrl: trimTrailingSlash(readEnv("GEMINI_BASE_URL") || "https://generativelanguage.googleapis.com/v1beta"),
         apiKey: readEnv("GEMINI_API_KEY"),
-        defaultModel: readEnv("GEMINI_DEFAULT_MODEL") || "gemini-2.0-flash",
+        defaultModel: readEnv("GEMINI_DEFAULT_MODEL") || "gemini-2.5-flash",
       };
     case "anthropic":
       return {
@@ -152,7 +152,7 @@ const buildProviderConfig = (id: ProviderId): ProviderConfig => {
   }
 };
 
-export const providerCatalog: Record<ProviderId, ProviderConfig> = {
+const getProviderCatalog = (): Record<ProviderId, ProviderConfig> => ({
   openai: buildProviderConfig("openai"),
   grok: buildProviderConfig("grok"),
   glm: buildProviderConfig("glm"),
@@ -160,7 +160,7 @@ export const providerCatalog: Record<ProviderId, ProviderConfig> = {
   anthropic: buildProviderConfig("anthropic"),
   deepseek: buildProviderConfig("deepseek"),
   qwen: buildProviderConfig("qwen"),
-};
+});
 
 const normalizeText = (value: unknown) => {
   if (typeof value === "string") {
@@ -297,7 +297,7 @@ const ensureValidRequest = (request: UnifiedChatRequest) => {
 
 export const prepareRequest = (request: UnifiedChatRequest): PreparedRequest => {
   ensureValidRequest(request);
-  const provider = providerCatalog[request.provider];
+  const provider = getProviderCatalog()[request.provider];
   const model = request.model || provider.defaultModel;
   const apiKey = provider.apiKey || "YOUR_API_KEY";
 
@@ -768,7 +768,7 @@ const extractUsage = (payload: any, providerId: ProviderId) => {
 
 export const callProvider = async (request: UnifiedChatRequest): Promise<UnifiedChatResponse> => {
   ensureValidRequest(request);
-  const provider = providerCatalog[request.provider];
+  const provider = getProviderCatalog()[request.provider];
   if (!provider.apiKey) {
     throw new Error(`Missing API key for provider: ${provider.id}`);
   }
@@ -828,7 +828,7 @@ export const callProvider = async (request: UnifiedChatRequest): Promise<Unified
 };
 
 export const getProviderSummary = () => {
-  return Object.values(providerCatalog).map((provider) => ({
+  return Object.values(getProviderCatalog()).map((provider) => ({
     id: provider.id,
     label: provider.label,
     kind: provider.kind,
